@@ -1,0 +1,51 @@
+npm init -y
+npm i express cors dotenv
+npm i nodemon --save-dotenv
+go to package.json and add "dev" under scripts. dev = nodemon app.json
+go to package.json and change type to module, then can start importing express
+
+
+req -> receiving data from client
+res -> delivering data to client
+
+
+test with postman, write the url and what type of API. status 200 is good already
+
+
+setting up prisma
+npx prisma init
+npm i prisma --save-dev
+npm i @prisma/client
+
+
+when connecting to db, make sure to include these codes to ensure graceful shutdown when app crashes
+// Handle unhandled promise rejections (e.g., database connection errors)
+process.on("unhandledRejection", (err) => {
+  console.error("Unhandled Rejection:", err);
+  server.close(async () => {
+    await disconnectDB();
+    process.exit(1);
+  });
+});
+
+// Handle uncaught exceptions
+process.on("uncaughtException", async (err) => {
+  console.error("Uncaught Exception:", err);
+  await disconnectDB();
+  process.exit(1);
+});
+
+// Graceful shutdown
+process.on("SIGTERM", async () => {
+  console.log("SIGTERM received, shutting down gracefully");
+  server.close(async () => {
+    await disconnectDB();
+    process.exit(0);
+  });
+});
+
+
+
+
+once created table, run npx prisma migrate dev --name **wtv message here**, everytime a change is made to the tables
+npx prisma generate
