@@ -49,3 +49,9 @@ process.on("SIGTERM", async () => {
 
 once created table, run npx prisma migrate dev --name **wtv message here**, everytime a change is made to the tables
 npx prisma generate
+
+
+organize routes using controllers for better readibility, better organization and modularity
+
+
+seed files can store mock data for your application

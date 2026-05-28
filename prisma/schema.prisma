@@ -11,18 +11,6 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id String @id @default(uuid())
-  name String 
-  age Int 
-  email String @unique
-  password String
-  createdAt DateTime @default(now())
-
-  watchlistItems WatchlistItem[]
-  movie Movie[] @relation("MovieCreator")
-}
-
 model Movie {
   id          String   @id @default(uuid())
   title       String
@@ -31,10 +19,8 @@ model Movie {
   genres      String[] @default([])
   runtime     Int?
   posterUrl   String?
-  createdBy   String
   createdAt   DateTime @default(now())
 
-  creator User @relation("MovieCreator", fields: [createdBy], references: [id], onDelete: Cascade)
   watchlistItems WatchlistItem[]
 }
 
@@ -48,8 +34,6 @@ model WatchlistItem {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
 }
 
