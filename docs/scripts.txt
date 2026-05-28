@@ -55,3 +55,14 @@ organize routes using controllers for better readibility, better organization an
 
 
 seed files can store mock data for your application
+
+
+
+errors i ran into:
+2. The Loading Order: Environment Variables
+Even if the URL was correct, your server.js file was importing the database connection before running dotenv's config(). Because JavaScript hoists import statements to the top of the file, Prisma was initializing before your .env variables were actually loaded into the environment. We fixed this by adding import "dotenv/config"; at the very top of the file.
+
+3. The Middleware Order: Express Initialization
+Your app.listen() method was placed before app.use(express.json()) and your route declarations. While Node is sometimes fast enough to gloss over this, best practice dictates defining all middleware and routes before opening the server to incoming traffic. If a request hit the server the exact millisecond it opened, Express wouldn't have known how to parse the JSON or where to route the request. We moved app.listen() to the bottom of the setup.
+
+4. prisma must always be exported default

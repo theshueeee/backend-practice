@@ -1,6 +1,7 @@
 const connectionString = `${process.env.DATABASE_URL}`;
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
+
 const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({
   adapter,
@@ -24,4 +25,5 @@ const disconnectDB = async () => {
     await prisma.$disconnect();
 }
 
-export {prisma, connectDB, disconnectDB};
+export  {connectDB, disconnectDB};
+export default prisma;

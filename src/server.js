@@ -1,26 +1,28 @@
 import express from "express";
-import {config} from "dotenv";
-import {connectDB, disconnectDB} from "./config/db.js";
-
+import "dotenv/config"; 
+import { connectDB, disconnectDB } from "./config/db.js";
+import watchlistRoutes from "./routes/watchlist.js";
+import movieRoutes from "./routes/movies.js";
 
 const app = express();
 const PORT = 5001;
 
-//Import Routes
-import movieRoutes from "./routes/movies.js";
-
-config();
+// 1. Connect Database
 connectDB();
 
-//API Routes
+// 2. Apply Middleware
+app.use(express.json());
+
+// 3. Define API Routes
 app.use("/movies", movieRoutes);
+app.use("/watchlist", watchlistRoutes);
 
-
-app.listen(PORT, ()=>{
-    console.log("The Server running on port 5001");
+// 4. Start Server (Save server instance to a variable for graceful shutdown)
+const server = app.listen(PORT, () => {
+  console.log(`The Server is running on port ${PORT}`);
 });
 
-// Handle unhandled promise rejections (e.g., database connection errors)
+// --- Error Handling & Shutdown below ---
 process.on("unhandledRejection", (err) => {
   console.error("Unhandled Rejection:", err);
   server.close(async () => {
@@ -29,14 +31,12 @@ process.on("unhandledRejection", (err) => {
   });
 });
 
-// Handle uncaught exceptions
 process.on("uncaughtException", async (err) => {
   console.error("Uncaught Exception:", err);
   await disconnectDB();
   process.exit(1);
 });
 
-// Graceful shutdown
 process.on("SIGTERM", async () => {
   console.log("SIGTERM received, shutting down gracefully");
   server.close(async () => {
@@ -44,8 +44,3 @@ process.on("SIGTERM", async () => {
     process.exit(0);
   });
 });
-
-//authentication - login/signup
-//movie - getting all movies
-//user - profile
-//watchlist - user adding movies to their watchlist

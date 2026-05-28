@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 
+
 //getting data
 router.get("/", (req,res)=>{
     res.send("Assna shit");
