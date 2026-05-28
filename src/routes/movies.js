@@ -1,24 +1,21 @@
 import express from "express";
+
 const router = express.Router();
 
-
-//getting data
-router.get("/", (req,res)=>{
-    res.send("Assna shit");
+router.get("/", (req, res) => {
+  res.json({ httpMethod: "get" });
 });
 
-//creating data
-router.post("/", (req,res)=>{
-    res.send("Assna shit");
+router.post("/", (req, res) => {
+  res.json({ httpMethod: "post" });
 });
 
-//updating data
-router.put("/", (req,res)=>{
-    res.send("Assna shit");
+router.put("/", (req, res) => {
+  res.json({ httpMethod: "put" });
 });
 
-//deleting data
-router.delete("/", (req,res)=>{
-    res.send("Assna shit");
+router.delete("/", (req, res) => {
+  res.json({ httpMethod: "delete" });
 });
+
 export default router;
