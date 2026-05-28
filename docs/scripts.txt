@@ -66,3 +66,9 @@ Even if the URL was correct, your server.js file was importing the database conn
 Your app.listen() method was placed before app.use(express.json()) and your route declarations. While Node is sometimes fast enough to gloss over this, best practice dictates defining all middleware and routes before opening the server to incoming traffic. If a request hit the server the exact millisecond it opened, Express wouldn't have known how to parse the JSON or where to route the request. We moved app.listen() to the bottom of the setup.
 
 4. prisma must always be exported default
+
+
+
+for validating requests(data sent from client to the server), use zod
+npm i zod
+must do validation for all request with body
