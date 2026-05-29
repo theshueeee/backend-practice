@@ -1,5 +1,18 @@
 import prisma from "../config/db.js";
 
+const getWatchlist = async (req, res) => {
+  const watchlist = await prisma.watchlistItem.findMany({
+    include: { movie: true },
+    orderBy: { createdAt: "desc" },
+  });
+
+  res.status(200).json({
+    status: "Success",
+    data: {
+      watchlist,
+    },
+  });
+};
 
 const addToWatchlist = async (req, res) => {
   const { movieId, status, rating, notes } = req.body;
@@ -15,8 +28,8 @@ const addToWatchlist = async (req, res) => {
 
   // CHeck if already added
   const existingInWatchlist = await prisma.watchlistItem.findFirst({
-  where: { movieId: movieId }, 
-});
+    where: { movieId: movieId },
+  });
 
   if (existingInWatchlist) {
     return res.status(400).json({ error: "Movie already in the watchlist" });
@@ -29,6 +42,7 @@ const addToWatchlist = async (req, res) => {
       rating,
       notes,
     },
+    include: { movie: true },
   });
 
   res.status(201).json({
@@ -39,7 +53,7 @@ const addToWatchlist = async (req, res) => {
   });
 };
 
-const deleteFromWatchlist = async (req,res) => {
+const deleteFromWatchlist = async (req, res) => {
   // Find watchlist item and verify ownership
   const watchlistItem = await prisma.watchlistItem.findUnique({
     where: { id: req.params.id },
@@ -81,6 +95,7 @@ const updateFromWatchlist = async (req, res) => {
   const updatedItem = await prisma.watchlistItem.update({
     where: { id: req.params.id },
     data: updateData,
+    include: { movie: true },
   });
 
   res.status(200).json({
@@ -91,6 +106,4 @@ const updateFromWatchlist = async (req, res) => {
   });
 };
 
-
-
-export {addToWatchlist, deleteFromWatchlist, updateFromWatchlist}
+export { getWatchlist, addToWatchlist, deleteFromWatchlist, updateFromWatchlist };

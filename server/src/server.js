@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import "dotenv/config"; 
 import { connectDB, disconnectDB } from "./config/db.js";
 import watchlistRoutes from "./routes/watchlist.js";
@@ -11,6 +12,7 @@ const PORT = 5001;
 connectDB();
 
 // 2. Apply Middleware
+app.use(cors());
 app.use(express.json());
 
 // 3. Define API Routes
