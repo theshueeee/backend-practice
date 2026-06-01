@@ -16,6 +16,7 @@ setting up prisma
 npx prisma init
 npm i prisma --save-dev
 npm i @prisma/client
+npm install @prisma/adapter-pg pg
 
 
 when connecting to db, make sure to include these codes to ensure graceful shutdown when app crashes
